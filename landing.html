@@ -1,67 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="landing.css">
-</head>
-<body>
+    <link rel="stylesheet" href="landing.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      async function gotoSignupPage() {
+        console.log("signup");
+        window.location.href = "http://localhost:3000/signup";
+      }
+    </script>
+  </head>
+  <body>
     <div>
-        <nav>
-            <ul>
-                <li>About</li>
-                <li>Signup</li>
-                <li id="x">twitter/x</li>
-                <li id="git">Github</li>
-            </ul>
-        </nav>
-        <div class="first-page">
-            <div class="first-page-left">OPTIM</div>
-            <div class="first-page-right">ISERR</div>
+      <nav>
+        <ul>
+          <li>About</li>
+          <li onclick="gotoSignupPage()">Signup</li>
+          <li id="x">twitter/x</li>
+          <li id="git">Github</li>
+        </ul>
+      </nav>
+      <div class="first-page">
+        <div class="first-page-left">OPTIM</div>
+        <div class="first-page-right">ISERR</div>
+      </div>
+      <img id="clock" src="./assets/clock.jpg" alt="" />
+      <div class="second-page">
+        <div class="second-page-left">
+          <div class="text-area">
+            <h1>Lorem, ipsum.</h1>
+            <br />
+            <h2>ariatur sed odio numquam quis?</h2>
+          </div>
+          <div class="text-area-hover">
+            <h1>Lorem, ipsum.</h1>
+            <br />
+            <h2>endis fugiat eveniet voluptatibus.</h2>
+          </div>
         </div>
-        <img id="clock" src="./assets/clock.jpg" alt="">
-        <div class="second-page">
-            <div class="second-page-left">
-                <div class="text-area">
-                    <h1>Lorem, ipsum.</h1> <br> <h2>ariatur sed odio numquam quis?</h2> 
-                </div>
-                <div class="text-area-hover">
-                    <h1>Lorem, ipsum.</h1> <br> <h2>endis fugiat eveniet voluptatibus.</h2> 
-                </div>
-            </div>
-            <div class="second-page-right">
-                <img class="AppScreenshot AppScreenshot1" src="./assets/AppScreenshot.png" alt="">
-                <img class="AppScreenshot AppScreenshot2" src="./assets/AppScreenshot.png" alt="">
-                <!-- Insert a button here-> Get Started -->
-            </div>
+        <div class="second-page-right">
+          <img
+            class="AppScreenshot AppScreenshot1"
+            src="./assets/AppScreenshot.png"
+            alt=""
+          />
+          <img
+            class="AppScreenshot AppScreenshot2"
+            src="./assets/AppScreenshot.png"
+            alt=""
+          />
+          <!-- Insert a button here-> Get Started -->
         </div>
-        <div class="third-page">
-            <div class="third-page-left">
-                <div class="footer-card-parent-left">
-                    <div class="footer-card-child-left">
-                    </div>
-                </div>
-                <div class="footer-card-parent-left">
-                    <div class="footer-card-child-left">
-                    </div>
-                </div>
-            </div>
-            <div class="third-page-right">
-                <div class="footer-card-parent-right">
-                    <div class="footer-card-child-right">
-                    </div>
-                </div>
-                <div class="footer-card-parent-right">
-                    <div class="footer-card-child-right">
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="third-page">
+        <div class="third-page-left">
+          <div class="footer-card-parent-left">
+            <div class="footer-card-child-left"></div>
+          </div>
+          <div class="footer-card-parent-left">
+            <div class="footer-card-child-left"></div>
+          </div>
         </div>
+        <div class="third-page-right">
+          <div class="footer-card-parent-right">
+            <div class="footer-card-child-right"></div>
+          </div>
+          <div class="footer-card-parent-right">
+            <div class="footer-card-child-right"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+      integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+      integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-    <script src="landing_script.js"></script> 
-</body>
+    <script src="landing_script.js"></script>
+  </body>
 </html>

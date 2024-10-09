@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OPTIMISER</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://kit.fontawesome.com/f218339789.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let countTask = 1;
+      function addNewTask(){
+        const title = document.getElementById("title").value;
+        const category = document.getElementById("task-select").value;
+        const taskDetails = document.getElementById("task-details").value;
+
+        if(category === "" || title === "" || taskDetails === ""){
+          alert("please fill all the 3 inputs to add a task!")
+          return;
+        }
+        if(category === "ALL TASKS"){
+          const listOfAllTasks = document.getElementById("listOfAllTasks");
+          listOfAllTasks.innerHTML +=
+          `<div id ='task-${countTask}'  class="single-task">
+                <div class="task-heading">${title}</div>
+                <hr />
+                <div class="task-content">${taskDetails}</div>
+                <hr />
+                <div class="task-bottom">
+                  <div><i class="fa-solid fa-pen-to-square"></i></div>
+                  <div><i class="fa-solid fa-trash-can"></i></div>
+                </div>
+          </div>`
+          countTask++;
+        }
+
+      }
+    </script>
+  </head>
+  <body>
+    <nav></nav>
+    <div class="hero">
+      <div class="sidebar">
+        <div class="personal-info-card">
+          <div id="pic"></div>
+          <div class="profile-text">
+            <div id="profile-name">Ashwani kaushik</div>
+            <div id="profile-info">More info</div>
+          </div>
+        </div>
+        <div class="btnDiv">
+          <button onclick="addNewTask()" class="addtaskBtn">ADD TASK</button>
+        </div>
+        <div id="task-input-box">
+          <textarea name="title" id="title" placeholder="Enter title" cols="30" rows="1"></textarea>
+          <select name="" id="task-select">
+            <option value="">--Select category--</option>
+            <option value="ALL TASKS">ALL TASKS</option>
+            <option value="IN PROGRESS">IN PROGRESS</option>
+            <option value="COMPLETED">COMPLETED</option>
+          </select>
+          <textarea name="task-details" id="task-details" placeholder="Enter task Details here and click on ADD TASK Button" cols="30" rows="15"></textarea>
+        </div>
+        <div class="btnDiv">
+          <button id="logoutBtn" class="addtaskBtn">LOG OUT</button>
+        </div>
+      </div>
+          <div class="task-category">
+            <div class="tasks-header">
+              <div>ALL TASKS</div>
+              <div class="task-stage-logo">
+                <i class="fa-solid fa-list-check"></i>
+              </div>
+              <div class="add-task-logo">
+                <i class="fa-solid fa-circle-plus"></i>
+              </div>
+            </div>
+            <hr />
+            <div id="listOfAllTasks">
+              <div class="single-task">
+                <div class="task-heading">Task Heading</div>
+                <hr />
+                <div class="task-content">TASK INFORMATION</div>
+                <hr />
+                <div class="task-bottom">
+                  <div><i class="fa-solid fa-pen-to-square"></i></div>
+                  <div><i class="fa-solid fa-trash-can"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="task-category">
+            <div class="tasks-header">
+              <div>IN PROGRESS</div>
+              <div class="task-stage-logo">
+                <i class="fa-solid fa-rectangle-list"></i>
+              </div>
+              <div class="add-task-logo">
+                <i class="fa-solid fa-circle-plus"></i>
+              </div>
+            </div>
+            <hr />
+            <div></div>
+          </div>
+          <div class="task-category">
+            <div class="tasks-header">
+              <div>COMPLETED</div>
+              <div class="task-stage-logo">
+                <i class="fa-solid fa-check-double"></i>
+              </div>
+              <div class="add-task-logo">
+                <i class="fa-solid fa-circle-plus"></i>
+              </div>
+            </div>
+            <hr />
+            <div></div>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

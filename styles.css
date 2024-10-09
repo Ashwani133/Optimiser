@@ -2,27 +2,24 @@
 *{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body{
-    min-height: 100vh;
+    min-height: 100%;
     background: linear-gradient(45deg, #0000FF,#0066b2,#89CFF0);
 }
-.menu{
-    display: none;
-}
-.hide-menu{
-    display: none;
-}
+
 .hero{
-    width: 90%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 2em;
 }
 
 .sidebar{
     margin-left: 10px;
-    min-width: 300px;
+    min-width: 275px;
     height: 90vh;
     background-color: #6495ED;
     border: 1px solid black;
@@ -65,11 +62,37 @@ body{
     border: none;
 }
 
-#takeNote{
+#task-input-box{
     width: 90%;
     height: 60%;
     background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5em;
 }
+
+#title{
+    width: 90%;
+    border-radius: 20px;
+    padding: 0.5em;
+}
+
+#task-details{
+    width: 90%;
+    border-radius: 20px;
+    padding: 0.5em;
+    overflow-wrap: break-word;
+    margin-top: 20px;
+}
+
+#task-select{
+    width: 90%;
+    height: 30px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
 .tasks-section{
     display: flex;
     justify-content: space-between;
@@ -89,7 +112,7 @@ body{
 
 .task-category{
     min-height: 90%;
-    width: 70%;
+    min-width: 275px;
     background-color: white;
     margin: 10px;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
@@ -117,7 +140,7 @@ body{
     justify-content: space-between;
 }
 
-@media(max-width: 800px){
+/* @media(max-width: 800px){
     .sidebar{
         display: none;
         position: absolute;
@@ -131,8 +154,8 @@ body{
     .alltasks{
         flex-direction: column;
     }
-}
-@media(min-width:800px){
+} */
+/* @media(min-width:800px){
     .sidebar{
         display: flex;
         position: null;
@@ -143,4 +166,4 @@ body{
     .hide-menu{
         display: none;
     }
-}
+} */
