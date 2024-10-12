@@ -47,10 +47,10 @@ app.post("/signin",function(req,res){
             username:foundUser.username
         },JWT_SECRET);
 
-        res.header("jwt",token);
-        req.header("jwt",token);
-        res.header("random","ashwani");
-        req.token = token;
+        // res.header("jwt",token);
+        // req.header("jwt",token);
+        // res.header("random","ashwani");
+        // req.token = token;
         res.send({
             token:token
         })
@@ -75,10 +75,15 @@ function auth(req,res,next){
     }
 }
 
-app.get("/todo",auth,function(req,res){
-    console.log(path.join(__dirname, '../', 'todo.html'));
-    res.sendFile(path.join(__dirname, '../', 'todo.html'));
-})
+app.get("/todo",function(req,res){
+    const filePath = path.join(__dirname, '../', 'todo.html');
+    res.sendFile(filePath);
+});
 
+app.get("/me",auth,function(req,res){
+    res.json({
+        message:"You are logged in through me!"
+    })
+})
 
 app.listen(3000);
