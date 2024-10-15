@@ -100,12 +100,14 @@ nav li:hover{
 .text-area{
     position: absolute;
     opacity: 0.2;
+    margin-left: 20px;
 }
 .text-area-hover{
     position: absolute;
     opacity: 1;
     white-space: nowrap;
     overflow: hidden;
+    width: 50%;
 }
 
 .text-area-hover h1{
@@ -113,13 +115,17 @@ nav li:hover{
     white-space: nowrap;
     overflow: hidden;
     color: #DD1C1A;
+    margin-left: 3.9em;
+    margin-top: 0.7em;
 }
 
-.text-area-hover h2{
+.text-area-hover h4{
     width: 0%;
     white-space: nowrap;
     overflow: hidden;
     color: #F0C808;
+    margin-left: 6.5em;
+    margin-bottom: 1.4em;
 }
 
 .second-page-right{
@@ -135,10 +141,12 @@ nav li:hover{
     height: 30%;
     z-index: 999;
     transform: translate(15%, 100%);
+    margin-top: 2em;
 }
 
 .AppScreenshot2{
     transform: rotate(20deg);
+    margin-top: 2em;
 }
 
 .third-page{
@@ -182,6 +190,11 @@ nav li:hover{
     width: 95%;
     border: 1px solid white;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Anton", sans-serif;
+    color: #dee4ea;
 }
 
 .footer-card-parent-right{
@@ -200,4 +213,9 @@ nav li:hover{
     width: 95%;
     border: 1px solid #0066b2;;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Anton", sans-serif;
+    color: #0066b2;
 }

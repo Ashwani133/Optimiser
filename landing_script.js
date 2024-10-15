@@ -1,4 +1,4 @@
-const lenis = new Lenis()
+/* <---const lenis = new Lenis()
 
 lenis.on('scroll', (e) => {
   console.log(e)
@@ -9,7 +9,7 @@ function raf(time) {
   requestAnimationFrame(raf)
 }
 
-requestAnimationFrame(raf)
+requestAnimationFrame(raf) --->*/
 
 let tl = gsap.timeline({
     scrollTrigger:{
@@ -26,7 +26,7 @@ tl.to(".text-area-hover h1", {
     duration: 2    // Optional: add a duration for the animation
 });
 
-tl.to(".text-area-hover h2", {
+tl.to(".text-area-hover h4", {
     width: "100%",  // Ensure "100%" is a string with units
     duration: 1    // Optional: add a duration for the animation
 });
