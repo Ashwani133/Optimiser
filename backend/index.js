@@ -1,11 +1,17 @@
 const express = require("express");
 const path = require('path');
-const app = express();
 var jwt = require('jsonwebtoken');
-const JWT_SECRET = "AshwaniKaushik123@123"
+const mongoose = require("mongoose")
+const {UserModel, TodoModel} = require("./db")
+const {z} = require("zod");
+const bcrypt = require("bcrypt");
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+mongoose.connect("mongodb+srv://ashwani_9818:Ashwani%409818@cluster0.f6z2x.mongodb.net/todo-app-database")
+
+const app = express();
 app.use(express.json());
 
-const users = [];
 
 app.use(express.static('../'));
 
@@ -18,55 +24,131 @@ app.get("/signup", function (req, res) {
 })
 
 
-app.post("/signup",function(req,res){
-    const username = req.body.username;
-    const email = req.body.email;
-    const password = req.body.password;
+app.post("/signup",async function(req,res){
 
-    users.push({
-        username:username,
-        email:email,
-        password:password
+    //Input validations
+    const requiredBody = z.object({
+        email:z.string().min(6).max(100).email(),
+        name:z.string().min(3).max(100),
+        password:z.string()
+        .min(8, { message: "Password must be at least 8 characters long" })
+        .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
+        .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+        .regex(/\d/, { message: "Password must contain at least one digit" })
+        .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "Password must contain at least one special character" })
     })
 
-    res.json({
-        message:"You are signed up!"
-    })
+    const parsedDataWithSuccess = requiredBody.safeParse(req.body);
+
+    //Data doesn't pass the validation tests
+    if(!parsedDataWithSuccess.success){
+        res.status(400).json({
+            message:"Incorrect Format",
+            error:parsedDataWithSuccess.error.issues[0].message
+        })
+        return;
+    }
+
+
+    const name = req.body.name.trim();
+    const email = req.body.email.trim().toLowerCase();
+    const password = req.body.password.trim();
+    
+    //hash Password before storing it using salt in db
+    let errorThrown = false;
+    try {
+        const hashedPassword = await bcrypt.hash(password,10);
+
+        await UserModel.create({
+            email:email,
+            name:name,
+            password:hashedPassword
+        })
+        res.status(201).json({
+            message:"You are signed up!"
+        })
+        errorThrown = true;
+
+    }catch(e){
+        res.json({
+            message:"User already exists!"
+        })
+    }
+
+    if(!errorThrown){
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+
 })
+
 
 app.get("/signin", function (req, res) {
     res.sendFile(path.join(__dirname, '../', 'signin.html'))
 })
 
-app.post("/signin",function(req,res){
-    const username = req.body.username;
-    const password = req.body.password;
-    const foundUser = users.find((u)=>u.username === username && u.password === password);
-    if(foundUser){
-        const token = jwt.sign({
-            username:foundUser.username
-        },JWT_SECRET);
+let currentUserId = new mongoose.Types.ObjectId();//Use it while creating task to link it with userId
+app.post("/signin",async function(req,res){
 
-        // res.header("jwt",token);
-        // req.header("jwt",token);
-        // res.header("random","ashwani");
-        // req.token = token;
-        res.send({
-            token:token
+    const loginBodySchema = z.object({
+        email: z.string().email().min(6, "Email must be at least 6 characters long").max(100, "Email is too long"),
+        password: z.string().min(8, "Password must be at least 8 characters long")
+    })
+
+    const parsedLoginData = loginBodySchema.safeParse(req.body);
+    if(!parsedLoginData){
+        res.status(400).json({
+            message: "Invalid input",
+            error: parsedData.error.issues[0].message
         })
+        return;
+    }
+    const email = req.body.email.trim().toLowerCase();;
+    const password = req.body.password;
+    
+    try{
+        const response = await UserModel.findOne({
+            email:email
+        }) 
+    
+        if(!response){
+            res.status(403).json({
+                message:"User does not exist!"
+            })
+            return
+        }
+    
+        const passwordMatched = await bcrypt.compare(password,response.password);
         
-    }else{
-        res.send({
-            message:"Invalid username or password!"
-        })
+        if(passwordMatched){
+            const token = jwt.sign({
+                id:response._id
+            },process.env.JWT_SECRET);
+    
+            res.send({
+                token:token
+            })
+            currentUserId = response._id; // to save the current user Id to link it to his/her tasks later
+        }else{
+            res.status(403).send({
+                message:"Invalid username or password!"
+            })
+        }
+    }catch(e){
+        console.error(e);
+        res.status(500).json({
+            message: "Internal server error",
+            error: e.message
+        });
     }
 })
 
 function auth(req,res,next){
     console.log("token is: ",req.headers.token);
     const token = req.headers.token;
-    const decodedData = jwt.verify(token,JWT_SECRET)
-    if(decodedData.username){
+    const decodedData = jwt.verify(token,process.env.JWT_SECRET)
+    if(decodedData){
         next()
     }else{
         res.json({
@@ -75,14 +157,55 @@ function auth(req,res,next){
     }
 }
 
-app.get("/todo",function(req,res){
+app.get("/todo",async function(req,res){
     const filePath = path.join(__dirname, '../', 'todo.html');
     res.sendFile(filePath);
 });
 
-app.get("/me",auth,function(req,res){
+app.get("/me",auth,async function(req,res){
+    const email = req.headers.email;
+    const user = await UserModel.find({email:email})
+    const tasks = await TodoModel.find({userId:user[0]._id});
+    res.send(tasks);
+})
+
+app.post("/todo",async function(req,res){
+        //inputs from body
+        const taskId = req.body.taskId;
+        const taskTitle = req.body.title;
+        const taskDetail = req.body.detail;
+        const taskCategory = req.body.category;
+        await TodoModel.create({
+            taskId:taskId,
+            title:taskTitle,
+            detail:taskDetail,
+            category:taskCategory,
+            userId:currentUserId
+        })
+
+        res.json({
+            message:"task is created"
+        })
+})
+
+app.put("/todo/:taskId", async function(req,res){
+    const {taskId} = req.params;
+    const filter = {taskId:taskId};
+
+    const update = {
+        taskId:taskId,
+        title:req.body.title,
+        detail:req.body.detail
+    }
+    
+    await TodoModel.findOneAndUpdate(filter, update,{ new: true });
+})
+
+app.delete("/todo/:taskId",async function(req,res){
+    const {taskId} = req.params;
+    await TodoModel.deleteOne({taskId:taskId})
     res.json({
-        message:"You are logged in through me!"
+        message:"Task deleted successfully!"
     })
 })
 

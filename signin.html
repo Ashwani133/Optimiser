@@ -8,22 +8,19 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       async function signin() {
-        const username_signin =
-          document.getElementById("username-signin").value;
+        const email_signin = document.getElementById("email-signin").value;
         const password_signin =
           document.getElementById("password-signin").value;
 
         const response = await axios.post("http://localhost:3000/signin", {
-          username: username_signin,
+          email: email_signin,
           password: password_signin,
         });
 
         const token = response.data.token;
         localStorage.setItem("token", response.data.token);
-
-        await axios.get("http://localhost:3000/todo", {
-          headers: { token: token },
-        });
+        localStorage.setItem("email", email_signin);
+        window.location.href = "/todo";
       }
     </script>
   </head>
@@ -32,7 +29,7 @@
       <div class="signin-container">
         <h1>Signin</h1>
         <input
-          id="username-signin"
+          id="email-signin"
           type="text"
           placeholder="Enter your username"
         />
