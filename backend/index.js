@@ -7,7 +7,9 @@ const {z} = require("zod");
 const bcrypt = require("bcrypt");
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
-mongoose.connect("mongodb+srv://ashwani_9818:Ashwani%409818@cluster0.f6z2x.mongodb.net/todo-app-database")
+console.log(process.env.MONGO_URL);
+
+mongoose.connect(process.env.MONGO_URL)
 
 const app = express();
 app.use(express.json());
