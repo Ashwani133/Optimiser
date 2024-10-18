@@ -18,11 +18,11 @@ app.use(express.json());
 app.use(express.static('./'));
 
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, '/', 'index.html'));
+    res.sendFile(path.join(__dirname, '/', 'landing.html'));
 })
 
 app.get("/signup", function (req, res) {
-    res.sendFile(path.join(process.env.BASE_URL, '/', 'signup.html'))
+    res.sendFile(path.join(__dirname, '/', 'signup.html'))
 })
 
 
@@ -87,7 +87,7 @@ app.post("/signup",async function(req,res){
 
 
 app.get("/signin", function (req, res) {
-    res.sendFile(path.join(process.env.BASE_URL, '/', 'signin.html'))
+    res.sendFile(path.join(__dirname, '/', 'signin.html'))
 })
 
 let currentUserId = new mongoose.Types.ObjectId();//Use it while creating task to link it with userId
@@ -159,7 +159,7 @@ function auth(req,res,next){
 }
 
 app.get("/todo",async function(req,res){
-    const filePath = path.join(process.env.BASE_URL, '/', 'todo.html');
+    const filePath = path.join(__dirname, '/', 'todo.html');
     res.sendFile(filePath);
 });
 
