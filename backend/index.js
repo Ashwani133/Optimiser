@@ -175,12 +175,14 @@ app.post("/todo",async function(req,res){
         const taskTitle = req.body.title;
         const taskDetail = req.body.detail;
         const taskCategory = req.body.category;
+        const dueDateTime = req.body.dueDateTime;
         await TodoModel.create({
             taskId:taskId,
             title:taskTitle,
             detail:taskDetail,
             category:taskCategory,
-            userId:currentUserId
+            userId:currentUserId,
+            dueDateTime:dueDateTime
         })
 
         res.json({
@@ -195,10 +197,14 @@ app.put("/todo/:taskId", async function(req,res){
     const update = {
         taskId:taskId,
         title:req.body.title,
-        detail:req.body.detail
+        detail:req.body.detail,
+        category:req.body.category
     }
     
     await TodoModel.findOneAndUpdate(filter, update,{ new: true });
+    res.json({
+        message:"Task updated!"
+    })
 })
 
 app.delete("/todo/:taskId",async function(req,res){

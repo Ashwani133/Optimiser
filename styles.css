@@ -93,6 +93,15 @@ body{
     margin-top: 20px;
 }
 
+#label-datetime-picker{
+    margin-top: 1em;
+}
+#datetime-picker{
+    width: 90%;
+    border-radius: 20px;
+    padding: 0.5em;
+}
+
 .tasks-section{
     display: flex;
     justify-content: space-between;
@@ -128,6 +137,7 @@ body{
     margin: 5px;
     border: 2px double black;
     border-radius: 5px;
+    max-width: 275px;
 }
 .task-content{
 

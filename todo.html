@@ -18,7 +18,7 @@
         <div class="personal-info-card">
           <div id="pic"></div>
           <div class="profile-text">
-            <div id="profile-name">Ashwani kaushik</div>
+            <div id="profile-name">User Name</div>
             <div id="profile-info">More info</div>
           </div>
         </div>
@@ -33,7 +33,9 @@
             <option value="IN PROGRESS">IN PROGRESS</option>
             <option value="COMPLETED">COMPLETED</option>
           </select>
-          <textarea name="task-details" id="task-details" placeholder="Enter task Details here and click on ADD TASK Button" cols="30" rows="15"></textarea>
+          <textarea name="task-details" id="task-details" placeholder="Enter task Details here and click on ADD TASK Button" cols="30" rows="10"></textarea>
+          <label id="label-datetime-picker" for="datetime-picker">Due date and time</label>
+          <input type="datetime-local" id="datetime-picker" name="datetime" >
         </div>
         <div class="btnDiv">
           <button id="logoutBtn" class="addtaskBtn">LOG OUT</button>
@@ -93,9 +95,10 @@
         const title = document.getElementById("title").value;
         const taskCategory = document.getElementById("task-select").value;
         const taskDetail = document.getElementById("task-details").value;
+        const dueDateTime = document.getElementById("datetime-picker").value;
 
-        if(taskCategory === "" || title === "" || taskDetail === ""){
-          alert("please fill all the 3 inputs to add a task!")
+        if(taskCategory === "" || title === "" || taskDetail === "" || dueDateTime ===""){
+          alert("please fill all the inputs to add a task!")
           return;
         }
         
@@ -103,14 +106,17 @@
           taskId:"task-"+countTask,
           title:title,
           detail:taskDetail,
-          category:taskCategory
+          category:taskCategory,
+          dueDateTime:dueDateTime
         });
-        
+        const localDueDateTime = convertDateTime(dueDateTime);
         const newTaskElement = 
                 `<div id ='task-${countTask}'  class="single-task">
                 <div class="task-heading">${title}</div>
                 <hr />
                 <div class="task-content">${taskDetail}</div>
+                <hr />
+                <div><span style="font-weight: bold">Due on:</span><span id = "date-time">${localDueDateTime}</span></div>
                 <hr />
                 <div class="task-bottom">
                   <div><i onClick = 'editTask("task-${countTask}")' class="fa-solid fa-pen-to-square"></i></div>
@@ -134,14 +140,18 @@
 
       async function editTask(taskId){
         const editElement = document.getElementById(taskId);
+        console.log(editElement);
         const editTitle = editElement.querySelector(".task-heading");
         const editDetail = editElement.querySelector(".task-content");
+        const editDateTime = editElement.querySelector("#date-time");
     
         addNewTaskBtn.innerHTML = "UPDATE TASK"
 
         document.getElementById("title").value = editTitle.innerHTML;
         document.getElementById("task-details").value = editDetail.innerHTML;
         document.getElementById("task-select").value = "";
+        const dateTime = convertHumanReadableToDateTimeLocal(editDateTime.textContent);
+        document.getElementById("datetime-picker").value = dateTime;
         addNewTaskBtn.removeEventListener("click", addNewTask); // Removes the 'Add' function
         addNewTaskBtn.addEventListener("click", function() {
         updateTask(taskId);
@@ -156,16 +166,26 @@
         addNewTaskBtn.removeEventListener("click", updateTask); // Removes the 'Update' function
         addNewTaskBtn.addEventListener("click", addNewTask, { once: true });
 
-        await axios.put(`http://localhost:3000/todo/${taskId}`,{
-            title:document.getElementById("title").value,
-            detail:document.getElementById("task-details").value
-        })
+        try {
+        await axios.put(`http://localhost:3000/todo/${taskId}`, {
+            title: document.getElementById("title").value,
+            detail: document.getElementById("task-details").value,
+            category: document.getElementById("task-select").value
+        });
+      
+        loggedin();  // <-- Call happens here
+    } catch (error) {
+        console.error("Error updating task: ", error);
       }
+
+    clearInputs();
+    }
 
       function clearInputs(){
         document.getElementById("title").value = "";
         document.getElementById("task-details").value = "";
         document.getElementById("task-select").value = "";
+        document.getElementById("datetime-picker").value = "";
       }
 
       async function deleteTask(taskID){
@@ -175,6 +195,7 @@
         allTasksInProgress.innerHTML = "";
         allTasksCompleted.innerHTML = "";
         loggedin();
+        clearInputs();
       } 
 
       //For auth after landing on todo page
@@ -189,18 +210,26 @@
             }
           })
 
+          //rendering the tasks again
+          listOfAllTasks.innerHTML = "";
+          allTasksInProgress.innerHTML = "";
+          allTasksCompleted.innerHTML = "";
+
           userData = await response.data;
           for(let i = 0; i < userData.length; i++){
             const taskId = userData[i].taskId;
             const title = userData[i].title;
             const detail = userData[i].detail;
             const category = userData[i].category;
-            
+            const dueDateTime = userData[i].dueDateTime;
+            const localDueDateTime = convertDateTime(dueDateTime);
             const newTaskElement = 
                 `<div id ='${taskId}'  class="single-task">
                 <div class="task-heading">${title}</div>
                 <hr />
                 <div class="task-content">${detail}</div>
+                <hr />
+                <div><span style="font-weight: bold;">Due on:</span><span id = "date-time">${localDueDateTime}</span></div>
                 <hr />
                 <div class="task-bottom">
                   <div><i onClick = "editTask('${taskId}')" class="fa-solid fa-pen-to-square"></i></div>
@@ -231,6 +260,41 @@
         console.log("Delete ran");
       }
       logoutBtn.addEventListener("click",logout);
+
+      function convertDateTime(isoDate){
+        const utcDate = new Date('2024-10-18T12:40:00.000Z');
+        const istOffset = 5.5 * 60 * 60 * 1000;
+        const istDate = new Date(utcDate.getTime() + istOffset);
+
+        const options = { 
+          year: 'numeric', 
+          month: 'numeric', 
+          day: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit'
+        };
+        return istDate.toLocaleString('en-IN', options);
+      }
+
+      function convertHumanReadableToDateTimeLocal(dateTimeString) {
+    // Assuming the format is like '18/10/2024, 11:40 PM' 
+      const [datePart, timePart] = dateTimeString.split(', '); // Split the date and time
+      const [day, month, year] = datePart.split('/'); // Split the day, month, year
+      const [time, period] = timePart.split(' '); // Split time and AM/PM period
+      let [hours, minutes] = time.split(':'); // Split hours and minutes
+    
+      // Convert 12-hour format to 24-hour format if necessary
+      if (period === 'PM' && hours !== '12') {
+        hours = String(parseInt(hours, 10) + 12);
+      } else if (period === 'AM' && hours === '12') {
+        hours = '00'; // Handle midnight case
+      }
+
+    // Combine into the required format
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+
     </script>
   </body>
 </html>

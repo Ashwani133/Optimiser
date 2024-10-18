@@ -13,7 +13,8 @@ const Todo = new Schema({
     title:String,
     detail:String,
     category:String,
-    userId:ObjectId
+    userId:ObjectId,
+    dueDateTime:Date,
     },
     {timestamps:true},
 )
