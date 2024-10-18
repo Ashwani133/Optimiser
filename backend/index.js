@@ -207,6 +207,23 @@ app.put("/todo/:taskId", async function(req,res){
     })
 })
 
+app.put("/todo/drag/:taskId", async function(req, res){
+    const {taskId} = req.params;
+    const filter = {
+        taskId:taskId
+    };
+    const category = req.body.category;
+    const update = {
+        taskId:taskId,
+        category:category
+    }
+    
+    await TodoModel.findOneAndUpdate(filter, update,{ new: true });
+    res.json({
+        message:"Task updated!"
+    })
+})
+
 app.delete("/todo/:taskId",async function(req,res){
     const {taskId} = req.params;
     await TodoModel.deleteOne({taskId:taskId})

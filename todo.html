@@ -41,7 +41,7 @@
           <button id="logoutBtn" class="addtaskBtn">LOG OUT</button>
         </div>
       </div>
-          <div class="task-category">
+          <div class="task-category droptarget">
             <div class="tasks-header">
               <div>ALL TASKS</div>
               <div class="task-stage-logo">
@@ -54,7 +54,7 @@
             <hr />
             <div id="listOfAllTasks"></div>
           </div>
-          <div class="task-category">
+          <div class="task-category droptarget">
             <div class="tasks-header">
               <div>IN PROGRESS</div>
               <div class="task-stage-logo">
@@ -67,7 +67,7 @@
             <hr />
             <div id = "allTasksInProgress"></div>
           </div>
-          <div class="task-category">
+          <div class="task-category droptarget">
             <div class="tasks-header">
               <div>COMPLETED</div>
               <div class="task-stage-logo">
@@ -111,7 +111,7 @@
         });
         const localDueDateTime = convertDateTime(dueDateTime);
         const newTaskElement = 
-                `<div id ='task-${countTask}'  class="single-task">
+                `<div draggable="true" id ='task-${countTask}'  class="single-task">
                 <div class="task-heading">${title}</div>
                 <hr />
                 <div class="task-content">${taskDetail}</div>
@@ -224,7 +224,7 @@
             const dueDateTime = userData[i].dueDateTime;
             const localDueDateTime = convertDateTime(dueDateTime);
             const newTaskElement = 
-                `<div id ='${taskId}'  class="single-task">
+                `<div draggable="true" id ='${taskId}'  class="single-task">
                 <div class="task-heading">${title}</div>
                 <hr />
                 <div class="task-content">${detail}</div>
@@ -293,6 +293,69 @@
     // Combine into the required format
     return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
+
+    //Drag and drop
+    document.addEventListener("dragstart", function(event) {
+    if (event.target.classList.contains("single-task")) {
+        event.dataTransfer.setData("text/plain", event.target.id);
+    } else {
+        event.preventDefault();
+    }
+    });
+
+  document.addEventListener("dragover", function(event) {
+    event.preventDefault();
+  });
+
+  document.addEventListener("drop", async function(event) {
+    event.preventDefault();
+    const draggedId = event.dataTransfer.getData("text/plain");
+    const draggedElement = document.getElementById(draggedId);
+    const dropTarget = event.target.closest('.droptarget'); // Adjust as necessary
+    console.log(dropTarget);
+    if (dropTarget && draggedElement) {
+        const allTask = dropTarget.querySelector("#listOfAllTasks")
+        const allTaskProgress = dropTarget.querySelector("#allTasksInProgress");
+        const allTaskCompleted = dropTarget.querySelector("#alltasksCompeted");
+        console.log(draggedId);
+        if(allTask){
+          listOfAllTasks.appendChild(draggedElement);
+
+        try {
+
+        await axios.put(`http://localhost:3000/todo/drag/${draggedId}`, {
+            category: "ALL TASKS"
+        });
+
+        loggedin();  // <-- Call happens here
+
+        } catch (error) {
+        console.error("Error updating task: ", error);
+      }
+
+        }else if(allTaskProgress){
+          allTaskProgress.appendChild(draggedElement);
+          try {
+            await axios.put(`http://localhost:3000/todo/drag/${draggedId}`, {
+              category: "IN PROGRESS"
+            });
+            loggedin();  // <-- Call happens here
+          } catch (error) {
+            console.error("Error updating task: ", error);
+          }
+        }else{
+          allTaskCompleted.appendChild(draggedElement);
+          try {
+            await axios.put(`http://localhost:3000/todo/drag/${draggedId}`, {
+              category: "COMPLETED"
+            });
+            loggedin();  // <-- Call happens here
+          } catch (error) {
+            console.error("Error updating task: ", error);
+          }
+        }
+    }
+  });
 
 
     </script>
