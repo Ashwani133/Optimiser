@@ -18,6 +18,7 @@
         });
 
         const token = response.data.token;
+        console.log(token);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("email", email_signin);
         window.location.href = "/todo";

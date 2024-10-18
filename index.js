@@ -2,10 +2,10 @@ const express = require("express");
 const path = require('path');
 var jwt = require('jsonwebtoken');
 const mongoose = require("mongoose")
-const {UserModel, TodoModel} = require("./db")
+const {UserModel, TodoModel} = require("./backend/db")
 const {z} = require("zod");
 const bcrypt = require("bcrypt");
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+require('dotenv').config();
 
 console.log(process.env.MONGO_URL);
 
@@ -15,14 +15,14 @@ const app = express();
 app.use(express.json());
 
 
-app.use(express.static('../'));
+app.use(express.static('./'));
 
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, '../', 'landing.html'));
+    res.sendFile(path.join(__dirname, '/', 'landing.html'));
 })
 
 app.get("/signup", function (req, res) {
-    res.sendFile(path.join(__dirname, '../', 'signup.html'))
+    res.sendFile(path.join(__dirname, '/', 'signup.html'))
 })
 
 
@@ -87,7 +87,7 @@ app.post("/signup",async function(req,res){
 
 
 app.get("/signin", function (req, res) {
-    res.sendFile(path.join(__dirname, '../', 'signin.html'))
+    res.sendFile(path.join(__dirname, '/', 'signin.html'))
 })
 
 let currentUserId = new mongoose.Types.ObjectId();//Use it while creating task to link it with userId
@@ -147,7 +147,6 @@ app.post("/signin",async function(req,res){
 })
 
 function auth(req,res,next){
-    console.log("token is: ",req.headers.token);
     const token = req.headers.token;
     const decodedData = jwt.verify(token,process.env.JWT_SECRET)
     if(decodedData){
@@ -160,7 +159,7 @@ function auth(req,res,next){
 }
 
 app.get("/todo",async function(req,res){
-    const filePath = path.join(__dirname, '../', 'todo.html');
+    const filePath = path.join(__dirname, '/', 'todo.html');
     res.sendFile(filePath);
 });
 

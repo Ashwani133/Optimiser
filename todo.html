@@ -317,26 +317,22 @@
         const allTask = dropTarget.querySelector("#listOfAllTasks")
         const allTaskProgress = dropTarget.querySelector("#allTasksInProgress");
         const allTaskCompleted = dropTarget.querySelector("#alltasksCompeted");
-        console.log(draggedId);
+        const taskId = draggedId;
         if(allTask){
           listOfAllTasks.appendChild(draggedElement);
 
         try {
-
-        await axios.put(`http://localhost:3000/todo/drag/${draggedId}`, {
+        const response = axios.put(`http://localhost:3000/todo/drag/${taskId}`, {
             category: "ALL TASKS"
         });
-
         loggedin();  // <-- Call happens here
-
         } catch (error) {
         console.error("Error updating task: ", error);
       }
-
-        }else if(allTaskProgress){
+    }else if(allTaskProgress){
           allTaskProgress.appendChild(draggedElement);
           try {
-            await axios.put(`http://localhost:3000/todo/drag/${draggedId}`, {
+            await axios.put(`http://localhost:3000/todo/drag/${taskId}`, {
               category: "IN PROGRESS"
             });
             loggedin();  // <-- Call happens here
@@ -346,7 +342,7 @@
         }else{
           allTaskCompleted.appendChild(draggedElement);
           try {
-            await axios.put(`http://localhost:3000/todo/drag/${draggedId}`, {
+            await axios.put(`http://localhost:3000/todo/drag/${taskId}`, {
               category: "COMPLETED"
             });
             loggedin();  // <-- Call happens here
