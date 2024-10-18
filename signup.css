@@ -55,6 +55,10 @@ input{
     color: #fff;
 }
 
+input:hover{
+    border: 1px solid #070707;
+}
+
 ::placeholder{
     color: #fff;
 }
@@ -71,12 +75,19 @@ button{
     cursor:pointer;
 }
 
+button:hover,
+button:focus{
+    opacity: 0.5;
+}
+
 p{
     text-align: center;
     padding: 10px;
     text-decoration: underline;
 }
 
-p:hover{
+p:hover,
+p:focus{
     cursor: pointer;
+    opacity: 0.5;
 }

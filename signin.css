@@ -24,7 +24,6 @@ main{
 
 .signin-container{
     width: 25%;
-    height: 55%;
     border: 2px solid rgba(255,255,255,.2);
     background: linear-gradient(45deg, #41065a, #0f61c4);
     backdrop-filter: blur(2px);
@@ -34,7 +33,6 @@ main{
     padding: 30px 40px;
     font-family: sans-serif;
     min-width: 350px;
-    min-height: 400px;
 }
 
 input{
@@ -46,6 +44,9 @@ input{
     margin-top: 20px;
     outline: none;
     color: #fff;
+}
+input:hover{
+    border: 1px solid #070707;
 }
 
 ::placeholder{
@@ -62,5 +63,10 @@ button{
     outline: none;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     cursor:pointer;
+}
+
+button:hover,
+button:focus{
+    opacity: 0.5;
 }
 

@@ -6,22 +6,6 @@
     <title>Document</title>
     <link rel="stylesheet" href="signup.css" />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-      async function signup() {
-        const name = document.getElementById("signup-username").value;
-        const email = document.getElementById("signup-email").value;
-        const password = document.getElementById("signup-password").value;
-
-        await axios.post("http://localhost:3000/signup", {
-          name: name,
-          email: email,
-          password: password,
-        });
-
-        alert("you are signed up!");
-        window.location.href = "http://localhost:3000/signin";
-      }
-    </script>
   </head>
   <body>
     <div class="container">
@@ -49,9 +33,42 @@
           />
           <button onclick="signup()">Signup</button>
           <p>Login</p>
-          <p>login as guest user</p>
+          <p id="guestUser">login as guest user</p>
         </div>
       </div>
     </div>
+    <script>
+      async function signup() {
+        const name = document.getElementById("signup-username").value;
+        const email = document.getElementById("signup-email").value;
+        const password = document.getElementById("signup-password").value;
+
+        await axios.post("http://localhost:3000/signup", {
+          name: name,
+          email: email,
+          password: password,
+        });
+
+        alert("you are signed up!");
+        window.location.href = "http://localhost:3000/signin";
+      }
+
+      async function loginGuestUser() {
+        console.log("guest user clicked");
+        const response = await axios.post("http://localhost:3000/signin", {
+          email: "guestuser@gmail.com",
+          password: "GuestUser@123",
+        });
+
+        const token = response.data.token;
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("email", "guestuser@gmail.com");
+        window.location.href = "/todo";
+      }
+
+      document
+        .getElementById("guestUser")
+        .addEventListener("click", loginGuestUser);
+    </script>
   </body>
 </html>
