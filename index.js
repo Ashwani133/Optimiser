@@ -18,11 +18,11 @@ app.use(express.json());
 app.use(express.static('./'));
 
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, '/', 'landing.html'));
+    res.sendFile(path.join(__dirname, 'landing.html'));
 })
 
 app.get("/signup", function (req, res) {
-    res.sendFile(path.join(__dirname, '/', 'signup.html'))
+    res.sendFile(path.join(__dirname, 'signup.html'))
 })
 
 
