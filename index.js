@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.static('./'));
 
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, '/', 'landing.html'));
+    res.sendFile(path.join(__dirname, '/', 'index.html'));
 })
 
 app.get("/signup", function (req, res) {
