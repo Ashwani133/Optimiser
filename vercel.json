@@ -1,31 +1,37 @@
 {
-    "version": 2,
-    "routes": [
-        {
-            "src": "/(.*\\.css)", // Serve CSS files directly
-            "dest": "/$1"
-        },
-          {
-            "src": "/(.*\\.js)", // Serve JS files directly (if you have any)
-            "dest": "/$1"
-        },
-          {
-            "src": "/(.*\\.html)", // Serve HTML files directly
-            "dest": "/$1"
-        },
-      {
-        "src": "/signup",
-        "dest": "/signup.html"
-      },
-      {
-        "src": "/about",
-        "dest": "/about.html"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "/index.html"
-      }
-    ]
-  }
-  
-  
+  "version": 2,
+  "routes": [
+    {
+      "src": "/(.*\\.css)",  
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.js)",   
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.html)", 
+      "dest": "/$1"
+    },
+    {
+      "src": "/signup",
+      "dest": "/signup.html"
+    },
+    {
+      "src": "/about",
+      "dest": "/about.html"
+    },
+    {
+      "src": "/about/contact",
+      "dest": "/nested/contact.html"
+    },
+    {
+      "src": "/about/team",
+      "dest": "/nested/team.html"
+    },
+    {
+      "src": "/(.*)", 
+      "dest": "/index.html"
+    }
+  ]
+}
