@@ -1,15 +1,19 @@
 {
     "version": 2,
-    "builds": [
-      {
-        "src": "index.js",
-        "use": "@vercel/node"
-      }
-    ],
     "routes": [
       {
+        "src": "/signup",
+        "dest": "/signup.html"
+      },
+      {
+        "src": "/about",
+        "dest": "/about.html"
+      },
+      {
         "src": "/(.*)",
-        "dest": "index.js"
+        "dest": "/index.html"
       }
     ]
   }
+  
+  
