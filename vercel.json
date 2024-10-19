@@ -18,6 +18,10 @@
       "dest": "/signup.html"
     },
     {
+      "src":"/todo",
+      "dest":"todo.html"
+    },
+    {
       "src": "/about",
       "dest": "/about.html"
     },
