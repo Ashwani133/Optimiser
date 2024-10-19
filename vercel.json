@@ -1,6 +1,18 @@
 {
     "version": 2,
     "routes": [
+        {
+            "src": "/(.*\\.css)", // Serve CSS files directly
+            "dest": "/$1"
+        },
+          {
+            "src": "/(.*\\.js)", // Serve JS files directly (if you have any)
+            "dest": "/$1"
+        },
+          {
+            "src": "/(.*\\.html)", // Serve HTML files directly
+            "dest": "/$1"
+        },
       {
         "src": "/signup",
         "dest": "/signup.html"
